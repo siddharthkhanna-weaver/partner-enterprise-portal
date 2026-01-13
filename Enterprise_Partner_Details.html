@@ -2075,6 +2075,59 @@
                     <label class="form-label">Office/Business Address</label>
                     <textarea class="form-textarea" style="min-height: 60px;">789 Commercial Complex, BKC, Mumbai - 400051, Maharashtra</textarea>
                 </div>
+
+                <!-- Bank Details Section -->
+                <div class="form-section-divider" style="margin: 24px 0 16px; padding-top: 16px; border-top: 1px solid var(--border);">
+                    <h4 style="font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px;">
+                        <svg style="width: 16px; height: 16px; vertical-align: middle; margin-right: 8px; fill: var(--primary);" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                        Bank Account Details
+                    </h4>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Bank Name</label>
+                        <select class="form-select" id="editBankName">
+                            <option value="">Select Bank</option>
+                            <option value="hdfc" selected>HDFC Bank</option>
+                            <option value="icici">ICICI Bank</option>
+                            <option value="sbi">State Bank of India</option>
+                            <option value="axis">Axis Bank</option>
+                            <option value="kotak">Kotak Mahindra Bank</option>
+                            <option value="yes">Yes Bank</option>
+                            <option value="pnb">Punjab National Bank</option>
+                            <option value="bob">Bank of Baroda</option>
+                            <option value="idfc">IDFC First Bank</option>
+                            <option value="indusind">IndusInd Bank</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Number</label>
+                        <input type="text" class="form-input" id="editAccountNumber" value="50100123456789" placeholder="Enter account number">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">IFSC Code</label>
+                        <input type="text" class="form-input" id="editIfscCode" value="HDFC0001234" placeholder="Enter IFSC code" style="text-transform: uppercase;" oninput="fetchBankBranch(this.value)">
+                        <span class="form-hint" id="bankBranchHint" style="font-size: 11px; color: var(--text-secondary); margin-top: 4px; display: block;">Branch: Andheri East, Mumbai</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Holder Name</label>
+                        <input type="text" class="form-input" id="editAccountHolderName" value="Rajesh Kumar" placeholder="Enter account holder name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div style="display: flex; align-items: center; gap: 8px; padding: 12px; background: rgba(40, 167, 69, 0.1); border-radius: 8px; border: 1px solid rgba(40, 167, 69, 0.2);">
+                        <svg style="width: 18px; height: 18px; fill: var(--success);" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <span style="font-size: 13px; color: var(--success); font-weight: 500;">Bank Account Verified</span>
+                        <span style="font-size: 11px; color: var(--text-secondary); margin-left: auto;">Verified on 15 Jan 2026</span>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">
+                        <svg style="width: 12px; height: 12px; vertical-align: middle; margin-right: 4px; fill: var(--warning);" viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        Note: Changing account number will reset verification status and require re-verification.
+                    </p>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
@@ -2251,8 +2304,82 @@
         }
 
         function savePartner() {
+            // Get bank details values for validation
+            const bankName = document.getElementById('editBankName').value;
+            const accountNumber = document.getElementById('editAccountNumber').value;
+            const ifscCode = document.getElementById('editIfscCode').value;
+            const accountHolderName = document.getElementById('editAccountHolderName').value;
+
+            // Basic validation
+            if (!bankName || !accountNumber || !ifscCode || !accountHolderName) {
+                showToast('Please fill all bank account details', 'error');
+                return;
+            }
+
+            // IFSC code format validation (11 characters: 4 letters + 0 + 6 alphanumeric)
+            const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+            if (!ifscRegex.test(ifscCode.toUpperCase())) {
+                showToast('Please enter a valid IFSC code', 'error');
+                return;
+            }
+
+            // Account number validation (minimum 9 digits, maximum 18 digits)
+            if (accountNumber.length < 9 || accountNumber.length > 18 || !/^\d+$/.test(accountNumber)) {
+                showToast('Please enter a valid account number (9-18 digits)', 'error');
+                return;
+            }
+
             closeEditModal();
-            showToast('Partner details updated successfully');
+            showToast('Partner details updated successfully (including bank details)');
+        }
+
+        // IFSC Code lookup for bank branch
+        function fetchBankBranch(ifscCode) {
+            const hintElement = document.getElementById('bankBranchHint');
+
+            if (!ifscCode || ifscCode.length < 11) {
+                hintElement.textContent = 'Enter complete IFSC code to see branch details';
+                hintElement.style.color = 'var(--text-secondary)';
+                return;
+            }
+
+            // Demo IFSC to branch mapping
+            const ifscBranchMap = {
+                'HDFC0001234': 'Branch: Andheri East, Mumbai',
+                'HDFC0000001': 'Branch: Fort, Mumbai',
+                'ICIC0000001': 'Branch: Nariman Point, Mumbai',
+                'SBIN0000001': 'Branch: Mumbai Main Branch',
+                'AXIS0000001': 'Branch: Worli, Mumbai',
+                'KKBK0000001': 'Branch: BKC, Mumbai',
+            };
+
+            const upperIfsc = ifscCode.toUpperCase();
+
+            if (ifscBranchMap[upperIfsc]) {
+                hintElement.textContent = ifscBranchMap[upperIfsc];
+                hintElement.style.color = 'var(--success)';
+            } else if (/^[A-Z]{4}0[A-Z0-9]{6}$/.test(upperIfsc)) {
+                // Valid format but not in demo data
+                const bankCode = upperIfsc.substring(0, 4);
+                const bankNames = {
+                    'HDFC': 'HDFC Bank',
+                    'ICIC': 'ICICI Bank',
+                    'SBIN': 'State Bank of India',
+                    'AXIS': 'Axis Bank',
+                    'KKBK': 'Kotak Mahindra Bank',
+                    'YESB': 'Yes Bank',
+                    'PUNB': 'Punjab National Bank',
+                    'BARB': 'Bank of Baroda',
+                    'IDFB': 'IDFC First Bank',
+                    'INDB': 'IndusInd Bank'
+                };
+                const bankName = bankNames[bankCode] || 'Bank';
+                hintElement.textContent = `Branch: ${bankName} Branch (Verifying...)`;
+                hintElement.style.color = 'var(--info)';
+            } else {
+                hintElement.textContent = 'Invalid IFSC code format';
+                hintElement.style.color = 'var(--error)';
+            }
         }
 
         function showUploadModal() {
