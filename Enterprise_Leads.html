@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeopleHome Partner Portal - Leads</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --primary-dark: #1A5D38;
+            --primary: #228B4A;
+            --primary-light: #2FA55A;
+            --accent: #EDB41C;
+            --background: #F5F6F5;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A2E28;
+            --text-secondary: #6B7B75;
+            --text-light: #9AA8A3;
+            --border: #E8EDEB;
+            --error: #DC3545;
+            --success: #28A745;
+            --info: #17A2B8;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            background: var(--background);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo {
+            height: 36px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: var(--background);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(34, 139, 74, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-item.active svg {
+            fill: var(--primary);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-secondary);
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--error);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--card-bg);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--background);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Page Content */
+        .page-content {
+            padding: 32px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Role Info Banner */
+        .role-info-banner {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.1) 0%, rgba(23, 162, 184, 0.05) 100%);
+            border: 1px solid rgba(23, 162, 184, 0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .role-info-banner.show {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .role-info-banner svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--info);
+        }
+
+        .role-info-content {
+            flex: 1;
+        }
+
+        .role-info-title {
+            font-weight: 600;
+            color: var(--info);
+            font-size: 14px;
+        }
+
+        .role-info-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border);
+        }
+
+        .stat-card.selected {
+            border-color: var(--primary);
+            background: rgba(34, 139, 74, 0.02);
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .stat-icon.all {
+            background: rgba(34, 139, 74, 0.1);
+        }
+
+        .stat-icon.all svg {
+            fill: var(--primary);
+        }
+
+        .stat-icon.new {
+            background: rgba(23, 162, 184, 0.1);
+        }
+
+        .stat-icon.new svg {
+            fill: var(--info);
+        }
+
+        .stat-icon.progress {
+            background: rgba(237, 180, 28, 0.15);
+        }
+
+        .stat-icon.progress svg {
+            fill: var(--accent);
+        }
+
+        .stat-icon.approved {
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .stat-icon.approved svg {
+            fill: var(--success);
+        }
+
+        .stat-icon.rejected {
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .stat-icon.rejected svg {
+            fill: var(--error);
+        }
+
+        .stat-content .value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-content .label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Filters */
+        .filters-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 16px;
+            gap: 10px;
+            width: 280px;
+        }
+
+        .search-box svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-light);
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .search-box input:focus {
+            outline: none;
+        }
+
+        .filter-select {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card-bg);
+            font-size: 14px;
+            color: var(--text-primary);
+            cursor: pointer;
+            min-width: 140px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .filter-select.highlight {
+            border-color: var(--primary);
+            background: rgba(34, 139, 74, 0.05);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-divider {
+            width: 1px;
+            height: 32px;
+            background: var(--border);
+            margin: 0 8px;
+        }
+
+        .date-range {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .date-input {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card-bg);
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Active Filter Indicator */
+        .active-filters {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            display: none;
+        }
+
+        .active-filters.show {
+            display: flex;
+        }
+
+        .filter-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(34, 139, 74, 0.1);
+            border: 1px solid rgba(34, 139, 74, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--primary-dark);
+        }
+
+        .filter-tag svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--primary);
+            cursor: pointer;
+        }
+
+        .filter-tag svg:hover {
+            fill: var(--error);
+        }
+
+        /* Data Table */
+        .data-table-wrapper {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--background);
+        }
+
+        .data-table th.sortable {
+            cursor: pointer;
+        }
+
+        .data-table th.sortable:hover {
+            color: var(--text-primary);
+        }
+
+        .data-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background: var(--background);
+            cursor: pointer;
+        }
+
+        .lead-id {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .customer-cell {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .customer-name {
+            font-weight: 500;
+        }
+
+        .customer-phone {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .partner-cell {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .partner-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .partner-link:hover {
+            text-decoration: underline;
+        }
+
+        .partner-rm {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .product-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--background);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .product-badge.hl {
+            background: rgba(34, 139, 74, 0.1);
+            color: var(--primary);
+        }
+
+        .product-badge.pl {
+            background: rgba(23, 162, 184, 0.1);
+            color: var(--info);
+        }
+
+        .product-badge.bl {
+            background: rgba(237, 180, 28, 0.15);
+            color: #B8860B;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .status-badge.new {
+            background: rgba(23, 162, 184, 0.1);
+            color: var(--info);
+        }
+
+        .status-badge.new .dot {
+            background: var(--info);
+        }
+
+        .status-badge.progress {
+            background: rgba(237, 180, 28, 0.15);
+            color: #B8860B;
+        }
+
+        .status-badge.progress .dot {
+            background: var(--accent);
+        }
+
+        .status-badge.approved {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .status-badge.approved .dot {
+            background: var(--success);
+        }
+
+        .status-badge.disbursed {
+            background: rgba(34, 139, 74, 0.15);
+            color: var(--primary-dark);
+        }
+
+        .status-badge.disbursed .dot {
+            background: var(--primary-dark);
+        }
+
+        .status-badge.rejected {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--error);
+        }
+
+        .status-badge.rejected .dot {
+            background: var(--error);
+        }
+
+        .amount {
+            font-weight: 600;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--border);
+        }
+
+        .action-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-secondary);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .pagination-info {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: var(--primary-dark);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1400px) {
+            .stats-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .filters-bar {
+                flex-wrap: wrap;
+            }
+
+            .date-range {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="Logo.png" alt="PeopleHome" class="sidebar-logo">
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Partner Management</div>
+                <a href="Enterprise_Partners.html" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                    </svg>
+                    Partners
+                    <span class="nav-badge">12</span>
+                </a>
+                <a href="Enterprise_Leads.html" class="nav-item active" id="leadsNavItem">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                    </svg>
+                    Leads
+                </a>
+            </div>
+
+            <div class="nav-section" id="adminSection">
+                <div class="nav-section-title">Administration</div>
+                <a href="Enterprise_Users.html" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    User Management
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">AK</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">Amit Kumar</div>
+                    <div class="user-role" id="userRoleLabel">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <h1 class="page-title">Leads</h1>
+            <div class="top-bar-actions">
+                <button class="btn btn-secondary" onclick="showToast('Exporting data...')">
+                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    Export
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Role Info Banner -->
+            <div class="role-info-banner" id="roleInfoBanner">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                </svg>
+                <div class="role-info-content">
+                    <div class="role-info-title" id="roleInfoTitle">Limited Access View</div>
+                    <div class="role-info-text" id="roleInfoText">You are viewing leads from partners mapped to you.</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-bar">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                    <input type="text" placeholder="Search by lead ID, customer...">
+                </div>
+
+                <div class="filter-group">
+                    <span class="filter-label">Partner:</span>
+                    <select class="filter-select" id="partnerFilter" onchange="applyFilter('partner', this.value)">
+                        <option value="">All Partners</option>
+                        <option value="rajesh_kumar">Rajesh Kumar (DSA)</option>
+                        <option value="priya_sharma">Priya Sharma (DSA)</option>
+                        <option value="amit_verma">Amit Verma (Connector)</option>
+                        <option value="sunita_mehta">Sunita Mehta (DSA)</option>
+                        <option value="vikram_gupta">Vikram Gupta (Connector)</option>
+                        <option value="neha_kapoor">Neha Kapoor (DSA)</option>
+                    </select>
+                </div>
+
+                <div class="filter-group" id="rmFilterGroup">
+                    <span class="filter-label">RM:</span>
+                    <select class="filter-select" id="rmFilter" onchange="applyFilter('rm', this.value)">
+                        <option value="">All RMs</option>
+                        <option value="rahul_sharma">Rahul Sharma</option>
+                        <option value="anita_desai">Anita Desai</option>
+                        <option value="vikash_singh">Vikash Singh</option>
+                        <option value="meera_patel">Meera Patel</option>
+                    </select>
+                </div>
+
+                <select class="filter-select" onchange="applyFilter('branch', this.value)">
+                    <option value="">All Branches</option>
+                    <option value="mumbai">Mumbai</option>
+                    <option value="delhi">Delhi</option>
+                    <option value="bangalore">Bangalore</option>
+                    <option value="pune">Pune</option>
+                </select>
+
+                <div class="date-range">
+                    <input type="date" class="date-input" value="2024-01-01">
+                    <span style="color: var(--text-secondary);">to</span>
+                    <input type="date" class="date-input" value="2024-01-20">
+                </div>
+            </div>
+
+            <!-- Active Filters -->
+            <div class="active-filters" id="activeFilters">
+                <span style="font-size: 12px; color: var(--text-secondary);">Active filters:</span>
+            </div>
+
+            <!-- Data Table -->
+            <div class="data-table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="sortable">Lead ID</th>
+                            <th class="sortable">Customer</th>
+                            <th>Partner</th>
+                            <th class="sortable">Created</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leadsTableBody">
+                        <tr onclick="window.location.href='Enterprise_Lead_Details.html'" data-partner="rajesh_kumar" data-rm="rahul_sharma">
+                            <td><span class="lead-id">LD-4521</span></td>
+                            <td>
+                                <div class="customer-cell">
+                                    <span class="customer-name">Amit Sharma</span>
+                                    <span class="customer-phone">+91 98765 43210</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="partner-cell">
+                                    <a href="Enterprise_Partner_Details.html" class="partner-link" onclick="event.stopPropagation()">Rajesh Kumar</a>
+                                    <span class="partner-rm">RM: Rahul Sharma</span>
+                                </div>
+                            </td>
+                            <td>Jan 18, 2024</td>
+                        </tr>
+                        <tr onclick="window.location.href='Enterprise_Lead_Details.html'" data-partner="priya_sharma" data-rm="anita_desai">
+                            <td><span class="lead-id">LD-4520</span></td>
+                            <td>
+                                <div class="customer-cell">
+                                    <span class="customer-name">Priya Patel</span>
+                                    <span class="customer-phone">+91 87654 32109</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="partner-cell">
+                                    <a href="Enterprise_Partner_Details.html" class="partner-link" onclick="event.stopPropagation()">Priya Sharma</a>
+                                    <span class="partner-rm">RM: Anita Desai</span>
+                                </div>
+                            </td>
+                            <td>Jan 18, 2024</td>
+                        </tr>
+                        <tr onclick="window.location.href='Enterprise_Lead_Details.html'" data-partner="amit_verma" data-rm="vikash_singh">
+                            <td><span class="lead-id">LD-4519</span></td>
+                            <td>
+                                <div class="customer-cell">
+                                    <span class="customer-name">Vikram Singh</span>
+                                    <span class="customer-phone">+91 76543 21098</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="partner-cell">
+                                    <a href="Enterprise_Partner_Details.html" class="partner-link" onclick="event.stopPropagation()">Amit Verma</a>
+                                    <span class="partner-rm">RM: Vikash Singh</span>
+                                </div>
+                            </td>
+                            <td>Jan 17, 2024</td>
+                        </tr>
+                        <tr onclick="window.location.href='Enterprise_Lead_Details.html'" data-partner="sunita_mehta" data-rm="rahul_sharma">
+                            <td><span class="lead-id">LD-4518</span></td>
+                            <td>
+                                <div class="customer-cell">
+                                    <span class="customer-name">Neha Kapoor</span>
+                                    <span class="customer-phone">+91 65432 10987</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="partner-cell">
+                                    <a href="Enterprise_Partner_Details.html" class="partner-link" onclick="event.stopPropagation()">Sunita Mehta</a>
+                                    <span class="partner-rm">RM: Rahul Sharma</span>
+                                </div>
+                            </td>
+                            <td>Jan 17, 2024</td>
+                        </tr>
+                        <tr onclick="window.location.href='Enterprise_Lead_Details.html'" data-partner="vikram_gupta" data-rm="meera_patel">
+                            <td><span class="lead-id">LD-4517</span></td>
+                            <td>
+                                <div class="customer-cell">
+                                    <span class="customer-name">Rahul Gupta</span>
+                                    <span class="customer-phone">+91 54321 09876</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="partner-cell">
+                                    <a href="Enterprise_Partner_Details.html" class="partner-link" onclick="event.stopPropagation()">Vikram Gupta</a>
+                                    <span class="partner-rm">RM: Meera Patel</span>
+                                </div>
+                            </td>
+                            <td>Jan 16, 2024</td>
+                        </tr>
+                        <tr onclick="window.location.href='Enterprise_Lead_Details.html'" data-partner="neha_kapoor" data-rm="anita_desai">
+                            <td><span class="lead-id">LD-4516</span></td>
+                            <td>
+                                <div class="customer-cell">
+                                    <span class="customer-name">Sanjay Mehta</span>
+                                    <span class="customer-phone">+91 43210 98765</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="partner-cell">
+                                    <a href="Enterprise_Partner_Details.html" class="partner-link" onclick="event.stopPropagation()">Neha Kapoor</a>
+                                    <span class="partner-rm">RM: Anita Desai</span>
+                                </div>
+                            </td>
+                            <td>Jan 15, 2024</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <div class="pagination-info" id="paginationInfo">
+                        Showing 1-6 of 3,892 leads
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="page-btn" disabled>
+                            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                        </button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">...</button>
+                        <button class="page-btn">649</button>
+                        <button class="page-btn">
+                            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Role configuration
+        const roleConfig = {
+            admin: {
+                showAllLeads: true,
+                showAdminSection: true,
+                showRMFilter: true,
+                showPartnerFilter: true,
+                label: 'Administrator'
+            },
+            rcu: {
+                showAllLeads: true,
+                showAdminSection: false,
+                showRMFilter: true,
+                showPartnerFilter: true,
+                label: 'RCU Verifier'
+            },
+            sales: {
+                showAllLeads: false,
+                showAdminSection: false,
+                showRMFilter: false,
+                showPartnerFilter: false,  // Will be limited to mapped partners
+                mappedRM: 'rahul_sharma',
+                mappedPartners: ['rajesh_kumar', 'sunita_mehta'],
+                label: 'Sales/RM'
+            }
+        };
+
+        // Get current user role from session
+        function getCurrentRole() {
+            return sessionStorage.getItem('userRole') || 'admin';
+        }
+
+        // Active filters tracking
+        let activeFilters = {
+            product: '',
+            partner: '',
+            rm: '',
+            branch: '',
+            status: 'all'
+        };
+
+        // Initialize page based on role
+        function initializePage() {
+            const role = getCurrentRole();
+            const config = roleConfig[role];
+
+            // Update user display
+            document.getElementById('userRoleLabel').textContent = config.label;
+
+            // Update sidebar based on role
+            const adminSection = document.getElementById('adminSection');
+            if (!config.showAdminSection) {
+                adminSection.style.display = 'none';
+            }
+
+            // Show/hide RM filter based on role
+            const rmFilterGroup = document.getElementById('rmFilterGroup');
+            if (!config.showRMFilter) {
+                rmFilterGroup.style.display = 'none';
+            }
+
+            // Handle partner filter for Sales role
+            const partnerFilter = document.getElementById('partnerFilter');
+            if (role === 'sales') {
+                // Limit partner filter to mapped partners only
+                partnerFilter.innerHTML = '<option value="">My Partners</option>';
+                config.mappedPartners.forEach(partnerId => {
+                    const partnerNames = {
+                        'rajesh_kumar': 'Rajesh Kumar (DSA)',
+                        'priya_sharma': 'Priya Sharma (DSA)',
+                        'amit_verma': 'Amit Verma (Connector)',
+                        'sunita_mehta': 'Sunita Mehta (DSA)',
+                        'vikram_gupta': 'Vikram Gupta (Connector)',
+                        'neha_kapoor': 'Neha Kapoor (DSA)'
+                    };
+                    const option = document.createElement('option');
+                    option.value = partnerId;
+                    option.textContent = partnerNames[partnerId];
+                    partnerFilter.appendChild(option);
+                });
+
+                // Show role info banner
+                const banner = document.getElementById('roleInfoBanner');
+                banner.classList.add('show');
+                document.getElementById('roleInfoTitle').textContent = 'Limited Access View';
+                document.getElementById('roleInfoText').textContent = 'You are viewing leads from partners mapped to you only.';
+
+                // Filter table to show only mapped partners' leads
+                filterLeadsForSalesRole(config.mappedPartners);
+
+                // Update stats for filtered view
+                updateStatsForFilteredView();
+            }
+
+            // RCU specific banner
+            if (role === 'rcu') {
+                const banner = document.getElementById('roleInfoBanner');
+                banner.classList.add('show');
+                document.getElementById('roleInfoTitle').textContent = 'RCU View';
+                document.getElementById('roleInfoText').textContent = 'Viewing all leads for verification activities.';
+            }
+        }
+
+        // Filter leads for Sales role
+        function filterLeadsForSalesRole(mappedPartners) {
+            const rows = document.querySelectorAll('#leadsTableBody tr');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const partnerId = row.getAttribute('data-partner');
+                if (mappedPartners.includes(partnerId)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Update pagination info
+            document.getElementById('paginationInfo').textContent = `Showing 1-${visibleCount} of ${visibleCount} leads`;
+        }
+
+        // Update stats for filtered view
+        function updateStatsForFilteredView() {
+            // Simulated reduced counts for Sales role
+            document.getElementById('statAll').textContent = '456';
+            document.getElementById('statNew').textContent = '89';
+            document.getElementById('statProgress').textContent = '67';
+            document.getElementById('statApproved').textContent = '245';
+            document.getElementById('statRejected').textContent = '55';
+        }
+
+        // Apply filter
+        function applyFilter(type, value) {
+            activeFilters[type] = value;
+            updateActiveFiltersDisplay();
+
+            if (value) {
+                showToast(`Filtered by ${type}: ${value.replace('_', ' ')}`);
+            } else {
+                showToast(`${type} filter cleared`);
+            }
+
+            // Apply filtering logic (demo)
+            applyAllFilters();
+        }
+
+        // Update active filters display
+        function updateActiveFiltersDisplay() {
+            const container = document.getElementById('activeFilters');
+            const hasFilters = Object.values(activeFilters).some(v => v && v !== 'all');
+
+            if (hasFilters) {
+                container.classList.add('show');
+                container.innerHTML = '<span style="font-size: 12px; color: var(--text-secondary);">Active filters:</span>';
+
+                Object.entries(activeFilters).forEach(([key, value]) => {
+                    if (value && value !== 'all') {
+                        const tag = document.createElement('span');
+                        tag.className = 'filter-tag';
+                        tag.innerHTML = `${key}: ${value.replace('_', ' ')} <svg viewBox="0 0 24 24" onclick="clearFilter('${key}')"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`;
+                        container.appendChild(tag);
+                    }
+                });
+            } else {
+                container.classList.remove('show');
+            }
+        }
+
+        // Clear specific filter
+        function clearFilter(type) {
+            activeFilters[type] = '';
+
+            // Reset corresponding select
+            const selectMap = {
+                'partner': 'partnerFilter',
+                'rm': 'rmFilter'
+            };
+
+            if (selectMap[type]) {
+                document.getElementById(selectMap[type]).value = '';
+            }
+
+            updateActiveFiltersDisplay();
+            applyAllFilters();
+            showToast(`${type} filter cleared`);
+        }
+
+        // Apply all filters
+        function applyAllFilters() {
+            const role = getCurrentRole();
+            const config = roleConfig[role];
+            const rows = document.querySelectorAll('#leadsTableBody tr');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const partnerId = row.getAttribute('data-partner');
+                const rmId = row.getAttribute('data-rm');
+
+                let visible = true;
+
+                // Role-based filtering for Sales
+                if (role === 'sales' && !config.mappedPartners.includes(partnerId)) {
+                    visible = false;
+                }
+
+                // Partner filter
+                if (activeFilters.partner && partnerId !== activeFilters.partner) {
+                    visible = false;
+                }
+
+                // RM filter
+                if (activeFilters.rm && rmId !== activeFilters.rm) {
+                    visible = false;
+                }
+
+                row.style.display = visible ? '' : 'none';
+                if (visible) visibleCount++;
+            });
+
+            // Update pagination info
+            const totalText = role === 'sales' ? visibleCount : '3,892';
+            document.getElementById('paginationInfo').textContent = `Showing 1-${visibleCount} of ${totalText} leads`;
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        function filterByStatus(element, status) {
+            document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            activeFilters.status = status;
+            showToast(`Filtering by: ${status === 'all' ? 'All Leads' : status}`);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>

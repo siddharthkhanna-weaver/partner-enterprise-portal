@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeopleHome Partner Enterprise Portal - Master Index</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --primary-dark: #1A5D38;
+            --primary: #228B4A;
+            --primary-light: #2FA55A;
+            --accent: #EDB41C;
+            --background: #F5F6F5;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A2E28;
+            --text-secondary: #6B7B75;
+            --text-light: #9AA8A3;
+            --border: #E8EDEB;
+        }
+
+        body {
+            background: var(--background);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            padding-left: 4px;
+        }
+
+        .screen-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .screen-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+        }
+
+        .screen-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .screen-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .screen-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screen-icon.green {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        }
+
+        .screen-icon.yellow {
+            background: linear-gradient(135deg, var(--accent) 0%, #F5C63D 100%);
+        }
+
+        .screen-icon.blue {
+            background: linear-gradient(135deg, #17A2B8 0%, #20c997 100%);
+        }
+
+        .screen-icon.red {
+            background: linear-gradient(135deg, #DC3545 0%, #e74c5e 100%);
+        }
+
+        .screen-icon svg {
+            width: 26px;
+            height: 26px;
+            fill: white;
+        }
+
+        .screen-icon.yellow svg {
+            fill: var(--primary-dark);
+        }
+
+        .screen-info {
+            flex: 1;
+        }
+
+        .screen-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .screen-role {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .screen-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 12px;
+        }
+
+        .role-badge.admin {
+            background: rgba(220, 53, 69, 0.1);
+            color: #DC3545;
+        }
+
+        .role-badge.sales {
+            background: rgba(34, 139, 74, 0.1);
+            color: var(--primary);
+        }
+
+        .role-badge.rcu {
+            background: rgba(237, 180, 28, 0.15);
+            color: #B8860B;
+        }
+
+        .role-badge.all {
+            background: rgba(23, 162, 184, 0.1);
+            color: #17A2B8;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            border-radius: 16px;
+            padding: 32px;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .info-box h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .info-item h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .info-item p {
+            font-size: 13px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="Logo.png" alt="PeopleHome" class="logo">
+            <h1>Partner Enterprise Portal</h1>
+            <p>Internal management portal for partner operations, lead tracking, and risk verification</p>
+            <span class="version-badge">Version 2.0 - Complete</span>
+        </div>
+
+        <!-- Role Info -->
+        <div class="info-box">
+            <h2>Role-Based Access Control</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <h3>Admin</h3>
+                    <p>Full access to all modules including user management, partner management, and complete data visibility across all branches.</p>
+                </div>
+                <div class="info-item">
+                    <h3>Sales/RM</h3>
+                    <p>Access to tagged/mapped partners only. Can view partner details, leads, and update status for assigned partners.</p>
+                </div>
+                <div class="info-item">
+                    <h3>RCU (Risk)</h3>
+                    <p>Partner verification access, document verification, and status updates. Limited to verification-related activities.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Authentication -->
+        <div class="section">
+            <div class="section-title">Authentication</div>
+            <div class="screen-grid">
+                <a href="Enterprise_Login.html" class="screen-card">
+                    <div class="screen-header">
+                        <div class="screen-icon green">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="screen-info">
+                            <div class="screen-name">Login (Email OTP)</div>
+                            <div class="screen-role">Entry Point</div>
+                        </div>
+                    </div>
+                    <p class="screen-desc">Portal login with email and OTP verification. Quick demo access for all roles.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Partner Management -->
+        <div class="section">
+            <div class="section-title">Partner Management</div>
+            <div class="screen-grid">
+                <a href="Enterprise_Partners.html" class="screen-card">
+                    <div class="screen-header">
+                        <div class="screen-icon blue">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                        </div>
+                        <div class="screen-info">
+                            <div class="screen-name">Partner List</div>
+                            <div class="screen-role">View All Partners</div>
+                        </div>
+                    </div>
+                    <p class="screen-desc">Filterable partner list with status, leads count, and quick actions. Role-based filtering.</p>
+                    <span class="role-badge all">All Roles</span>
+                </a>
+
+                <a href="Enterprise_Partner_Details.html" class="screen-card">
+                    <div class="screen-header">
+                        <div class="screen-icon blue">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </div>
+                        <div class="screen-info">
+                            <div class="screen-name">Partner Details</div>
+                            <div class="screen-role">Profile, Documents & Activity</div>
+                        </div>
+                    </div>
+                    <p class="screen-desc">Complete partner profile with all details, documents, comments, status history, and audit trails.</p>
+                    <span class="role-badge all">All Roles</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Lead Management -->
+        <div class="section">
+            <div class="section-title">Lead Management</div>
+            <div class="screen-grid">
+                <a href="Enterprise_Leads.html" class="screen-card">
+                    <div class="screen-header">
+                        <div class="screen-icon green">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                            </svg>
+                        </div>
+                        <div class="screen-info">
+                            <div class="screen-name">Leads List</div>
+                            <div class="screen-role">View by Partner / RM</div>
+                        </div>
+                    </div>
+                    <p class="screen-desc">Lead management with filters by partner, RM, status, and date. Role-based data visibility.</p>
+                    <span class="role-badge all">All Roles</span>
+                </a>
+
+                <a href="Enterprise_Lead_Details.html" class="screen-card">
+                    <div class="screen-header">
+                        <div class="screen-icon green">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                            </svg>
+                        </div>
+                        <div class="screen-info">
+                            <div class="screen-name">Lead Details</div>
+                            <div class="screen-role">Status & Timeline</div>
+                        </div>
+                    </div>
+                    <p class="screen-desc">Lead details with customer info, status timeline, and action buttons.</p>
+                    <span class="role-badge all">All Roles</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Administration -->
+        <div class="section">
+            <div class="section-title">Administration</div>
+            <div class="screen-grid">
+                <a href="Enterprise_Users.html" class="screen-card">
+                    <div class="screen-header">
+                        <div class="screen-icon red">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </div>
+                        <div class="screen-info">
+                            <div class="screen-name">User Management</div>
+                            <div class="screen-role">Create & Manage Users</div>
+                        </div>
+                    </div>
+                    <p class="screen-desc">Create users, assign roles (Admin/Sales/RCU), manage access and branch mapping.</p>
+                    <span class="role-badge admin">Admin Only</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>PeopleHome Partner Enterprise Portal &copy; 2024 | Version 2.0</p>
+        </div>
+    </div>
+</body>
+</html>

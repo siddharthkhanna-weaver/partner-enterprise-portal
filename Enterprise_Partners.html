@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeopleHome Enterprise - Partners</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --primary-dark: #1A5D38;
+            --primary: #228B4A;
+            --primary-light: #2FA55A;
+            --accent: #EDB41C;
+            --background: #F5F6F5;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A2E28;
+            --text-secondary: #6B7B75;
+            --text-light: #9AA8A3;
+            --border: #E8EDEB;
+            --error: #DC3545;
+            --success: #28A745;
+            --info: #17A2B8;
+            --warning: #FFC107;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            background: var(--background);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo {
+            height: 36px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: var(--background);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(34, 139, 74, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-item.active svg {
+            fill: var(--primary);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-secondary);
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--error);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .role-badge.admin {
+            background: rgba(34, 139, 74, 0.1);
+            color: var(--primary);
+        }
+
+        .role-badge.rcu {
+            background: rgba(23, 162, 184, 0.1);
+            color: var(--info);
+        }
+
+        .role-badge.sales {
+            background: rgba(237, 180, 28, 0.15);
+            color: #B8860B;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--card-bg);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .page-title-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .filter-indicator {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(237, 180, 28, 0.15);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #B8860B;
+        }
+
+        .filter-indicator svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--background);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Page Content */
+        .page-content {
+            padding: 32px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Filters */
+        .filters-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 16px;
+            gap: 10px;
+            width: 320px;
+        }
+
+        .search-box svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-light);
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .search-box input:focus {
+            outline: none;
+        }
+
+        .filter-select {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card-bg);
+            font-size: 14px;
+            color: var(--text-primary);
+            cursor: pointer;
+            min-width: 140px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .filter-select.highlighted {
+            border-color: var(--accent);
+            background: rgba(237, 180, 28, 0.05);
+        }
+
+        .clear-filters {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: transparent;
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .clear-filters:hover {
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .clear-filters svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* Stats Summary */
+        .stats-summary {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .summary-stat {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            background: var(--card-bg);
+            border-radius: 12px;
+        }
+
+        .summary-stat .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .summary-stat .dot.active {
+            background: var(--success);
+        }
+
+        .summary-stat .dot.review {
+            background: var(--info);
+        }
+
+        .summary-stat .dot.pending {
+            background: var(--accent);
+        }
+
+        .summary-stat .dot.onhold {
+            background: var(--error);
+        }
+
+        .summary-stat span {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .summary-stat strong {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-left: 4px;
+        }
+
+        /* Data Table */
+        .data-table-wrapper {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--background);
+        }
+
+        .data-table th.sortable {
+            cursor: pointer;
+        }
+
+        .data-table th.sortable:hover {
+            color: var(--text-primary);
+        }
+
+        .data-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background: var(--background);
+            cursor: pointer;
+        }
+
+        .partner-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .partner-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .partner-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .partner-code {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .type-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--background);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .type-badge.dsa {
+            background: rgba(34, 139, 74, 0.1);
+            color: var(--primary);
+        }
+
+        .type-badge.connector {
+            background: rgba(23, 162, 184, 0.1);
+            color: var(--info);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .status-badge.active {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .status-badge.active .dot {
+            background: var(--success);
+        }
+
+        .status-badge.pending {
+            background: rgba(237, 180, 28, 0.15);
+            color: #B8860B;
+        }
+
+        .status-badge.pending .dot {
+            background: var(--accent);
+        }
+
+        .status-badge.review {
+            background: rgba(23, 162, 184, 0.1);
+            color: var(--info);
+        }
+
+        .status-badge.review .dot {
+            background: var(--info);
+        }
+
+        .status-badge.onhold {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--error);
+        }
+
+        .status-badge.onhold .dot {
+            background: var(--error);
+        }
+
+        .leads-count {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .amount {
+            font-weight: 600;
+        }
+
+        .action-menu {
+            position: relative;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--border);
+        }
+
+        .action-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-secondary);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .pagination-info {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Role Info Banner */
+        .role-info-banner {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            background: rgba(237, 180, 28, 0.1);
+            border: 1px solid rgba(237, 180, 28, 0.3);
+            border-radius: 10px;
+            margin-bottom: 24px;
+        }
+
+        .role-info-banner svg {
+            width: 20px;
+            height: 20px;
+            fill: #B8860B;
+        }
+
+        .role-info-banner p {
+            font-size: 13px;
+            color: #856404;
+        }
+
+        .role-info-banner strong {
+            font-weight: 600;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: var(--primary-dark);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1200px) {
+            .filters-bar {
+                flex-wrap: wrap;
+            }
+
+            .stats-summary {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="Logo.png" alt="PeopleHome" class="sidebar-logo">
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Partner Management</div>
+                <a href="Enterprise_Partners.html" class="nav-item active">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                    </svg>
+                    Partners
+                    <span class="nav-badge" id="partnersBadge">12</span>
+                </a>
+                <a href="Enterprise_Leads.html" class="nav-item" id="leadsNavItem">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                    </svg>
+                    Leads
+                </a>
+            </div>
+
+            <div class="nav-section" id="adminSection">
+                <div class="nav-section-title">Administration</div>
+                <a href="Enterprise_Users.html" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    User Management
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info" onclick="showToast('Profile settings')">
+                <div class="user-avatar" id="userInitials">AK</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">Amit Kumar</div>
+                    <div class="user-role"><span class="role-badge admin" id="userRoleBadge">Admin</span></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="page-title-section">
+                <h1 class="page-title">Partners</h1>
+                <div class="filter-indicator" id="filterIndicator">
+                    <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+                    <span id="filterText">Showing mapped partners only</span>
+                </div>
+            </div>
+            <div class="top-bar-actions">
+                <button class="btn btn-secondary" onclick="showToast('Exporting data...')">
+                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    Export
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Role Info Banner -->
+            <div class="role-info-banner" id="roleInfoBanner">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <p><strong>Limited Access:</strong> You are viewing only partners mapped to you as the tagged RM.</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-bar">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                    <input type="text" placeholder="Search by name, code, mobile, PAN...">
+                </div>
+
+                <select class="filter-select" id="statusFilter" onchange="applyFilter()">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="review">Under Review</option>
+                    <option value="pending">Profile Pending</option>
+                    <option value="onhold">On Hold</option>
+                </select>
+
+                <select class="filter-select" id="typeFilter" onchange="applyFilter()">
+                    <option value="">All Types</option>
+                    <option value="dsa">DSA</option>
+                    <option value="connector">Connector</option>
+                </select>
+
+                <select class="filter-select" id="branchFilter" onchange="applyFilter()">
+                    <option value="">All Branches</option>
+                    <option value="mumbai">Mumbai</option>
+                    <option value="delhi">Delhi</option>
+                    <option value="bangalore">Bangalore</option>
+                    <option value="pune">Pune</option>
+                    <option value="chennai">Chennai</option>
+                    <option value="hyderabad">Hyderabad</option>
+                </select>
+
+                <select class="filter-select" id="rmFilter" onchange="applyFilter()">
+                    <option value="">All RMs</option>
+                    <option value="rahul_sharma">Rahul Sharma</option>
+                    <option value="amit_verma">Amit Verma</option>
+                    <option value="neha_kapoor">Neha Kapoor</option>
+                    <option value="kiran_rao">Kiran Rao</option>
+                    <option value="priya_singh">Priya Singh</option>
+                </select>
+
+                <button class="clear-filters" id="clearFilters" onclick="clearAllFilters()">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                    Clear Filters
+                </button>
+            </div>
+
+            <!-- Stats Summary -->
+            <div class="stats-summary">
+                <div class="summary-stat">
+                    <span class="dot active"></span>
+                    <span>Active:</span>
+                    <strong id="statActive">1,124</strong>
+                </div>
+                <div class="summary-stat">
+                    <span class="dot review"></span>
+                    <span>Under Review:</span>
+                    <strong id="statReview">28</strong>
+                </div>
+                <div class="summary-stat">
+                    <span class="dot pending"></span>
+                    <span>Profile Pending:</span>
+                    <strong id="statPending">67</strong>
+                </div>
+                <div class="summary-stat">
+                    <span class="dot onhold"></span>
+                    <span>On Hold:</span>
+                    <strong id="statOnhold">15</strong>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="data-table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="sortable">Partner</th>
+                            <th class="sortable">Type</th>
+                            <th class="sortable">Branch</th>
+                            <th>Tagged RM</th>
+                            <th class="sortable">Status</th>
+                            <th class="sortable">Registered On</th>
+                            <th class="sortable">Modified On</th>
+                        </tr>
+                    </thead>
+                    <tbody id="partnersTableBody">
+                        <tr onclick="window.location.href='Enterprise_Partner_Details.html'">
+                            <td>
+                                <div class="partner-cell">
+                                    <div class="partner-avatar">RK</div>
+                                    <div>
+                                        <div class="partner-name">Rajesh Kumar</div>
+                                        <div class="partner-code">PH-DSA-00142</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="type-badge dsa">DSA</span></td>
+                            <td>Mumbai</td>
+                            <td>Rahul Sharma</td>
+                            <td><span class="status-badge active"><span class="dot"></span>Active</span></td>
+                            <td>Jan 15, 2024</td>
+                            <td>Jan 18, 2024</td>
+                        </tr>
+                        <tr onclick="window.location.href='Enterprise_Partner_Details.html'">
+                            <td>
+                                <div class="partner-cell">
+                                    <div class="partner-avatar">PS</div>
+                                    <div>
+                                        <div class="partner-name">Priya Sharma</div>
+                                        <div class="partner-code">PH-CON-00143</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="type-badge connector">Connector</span></td>
+                            <td>Delhi</td>
+                            <td>Amit Verma</td>
+                            <td><span class="status-badge review"><span class="dot"></span>Under Review</span></td>
+                            <td>Jan 18, 2024</td>
+                            <td>Jan 19, 2024</td>
+                        </tr>
+                        <tr onclick="window.location.href='Enterprise_Partner_Details.html'">
+                            <td>
+                                <div class="partner-cell">
+                                    <div class="partner-avatar">AV</div>
+                                    <div>
+                                        <div class="partner-name">Amit Verma</div>
+                                        <div class="partner-code">PH-DSA-00140</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="type-badge dsa">DSA</span></td>
+                            <td>Pune</td>
+                            <td>Neha Kapoor</td>
+                            <td><span class="status-badge active"><span class="dot"></span>Active</span></td>
+                            <td>Jan 10, 2024</td>
+                            <td>Jan 16, 2024</td>
+                        </tr>
+                        <tr onclick="window.location.href='Enterprise_Partner_Details.html'">
+                            <td>
+                                <div class="partner-cell">
+                                    <div class="partner-avatar">SM</div>
+                                    <div>
+                                        <div class="partner-name">Sunita Mehta</div>
+                                        <div class="partner-code">PH-DSA-00141</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="type-badge dsa">DSA</span></td>
+                            <td>Bangalore</td>
+                            <td>Kiran Rao</td>
+                            <td><span class="status-badge pending"><span class="dot"></span>Profile Pending</span></td>
+                            <td>Jan 17, 2024</td>
+                            <td>Jan 17, 2024</td>
+                        </tr>
+                        <tr onclick="window.location.href='Enterprise_Partner_Details.html'">
+                            <td>
+                                <div class="partner-cell">
+                                    <div class="partner-avatar">VG</div>
+                                    <div>
+                                        <div class="partner-name">Vikram Gupta</div>
+                                        <div class="partner-code">PH-DSA-00128</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="type-badge dsa">DSA</span></td>
+                            <td>Mumbai</td>
+                            <td>Rahul Sharma</td>
+                            <td><span class="status-badge active"><span class="dot"></span>Active</span></td>
+                            <td>Dec 05, 2023</td>
+                            <td>Jan 12, 2024</td>
+                        </tr>
+                        <tr onclick="window.location.href='Enterprise_Partner_Details.html'">
+                            <td>
+                                <div class="partner-cell">
+                                    <div class="partner-avatar">NK</div>
+                                    <div>
+                                        <div class="partner-name">Neha Kapoor</div>
+                                        <div class="partner-code">PH-CON-00135</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="type-badge connector">Connector</span></td>
+                            <td>Delhi</td>
+                            <td>Amit Verma</td>
+                            <td><span class="status-badge active"><span class="dot"></span>Active</span></td>
+                            <td>Nov 28, 2023</td>
+                            <td>Jan 08, 2024</td>
+                        </tr>
+                        <tr onclick="window.location.href='Enterprise_Partner_Details.html'">
+                            <td>
+                                <div class="partner-cell">
+                                    <div class="partner-avatar">MJ</div>
+                                    <div>
+                                        <div class="partner-name">Manoj Joshi</div>
+                                        <div class="partner-code">PH-DSA-00150</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="type-badge dsa">DSA</span></td>
+                            <td>Chennai</td>
+                            <td>Priya Singh</td>
+                            <td><span class="status-badge onhold"><span class="dot"></span>On Hold</span></td>
+                            <td>Jan 20, 2024</td>
+                            <td>Jan 21, 2024</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <div class="pagination-info" id="paginationInfo">
+                        Showing 1-7 of 1,234 partners
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="page-btn" disabled>
+                            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                        </button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">...</button>
+                        <button class="page-btn">176</button>
+                        <button class="page-btn">
+                            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Role-based configuration
+        const roleConfig = {
+            admin: {
+                name: 'Amit Kumar',
+                initials: 'AK',
+                badge: 'Admin',
+                badgeClass: 'admin',
+                showAllPartners: true,
+                showAdminSection: true,
+                showRMFilter: true,
+                showLeads: true
+            },
+            rcu: {
+                name: 'Deepak Verma',
+                initials: 'DV',
+                badge: 'RCU',
+                badgeClass: 'rcu',
+                showAllPartners: true,
+                showAdminSection: false,
+                showRMFilter: true,
+                showLeads: false
+            },
+            sales: {
+                name: 'Rahul Sharma',
+                initials: 'RS',
+                badge: 'Sales/RM',
+                badgeClass: 'sales',
+                showAllPartners: false,
+                showAdminSection: false,
+                showRMFilter: false,
+                showLeads: true,
+                mappedRM: 'rahul_sharma'
+            }
+        };
+
+        // Get current user role from session
+        function getCurrentRole() {
+            return sessionStorage.getItem('userRole') || 'admin';
+        }
+
+        // Initialize page based on role
+        function initializePage() {
+            const role = getCurrentRole();
+            const config = roleConfig[role];
+
+            // Update user info
+            document.getElementById('userInitials').textContent = config.initials;
+            document.getElementById('userName').textContent = config.name;
+            document.getElementById('userRoleBadge').textContent = config.badge;
+            document.getElementById('userRoleBadge').className = 'role-badge ' + config.badgeClass;
+
+            // Show/hide admin section
+            document.getElementById('adminSection').style.display = config.showAdminSection ? 'block' : 'none';
+
+            // Show/hide leads nav item (RCU only sees Partners)
+            if (config.showLeads === false) {
+                document.getElementById('leadsNavItem').style.display = 'none';
+            }
+
+            // Show/hide RM filter for sales role
+            const rmFilter = document.getElementById('rmFilter');
+            if (!config.showRMFilter) {
+                rmFilter.style.display = 'none';
+            }
+
+            // Show role info banner and filter indicator for sales role
+            if (!config.showAllPartners) {
+                document.getElementById('roleInfoBanner').style.display = 'flex';
+                document.getElementById('filterIndicator').style.display = 'flex';
+
+                // Set RM filter to mapped RM and disable
+                if (config.mappedRM) {
+                    rmFilter.value = config.mappedRM;
+                    rmFilter.disabled = true;
+                }
+
+                // Update stats for filtered view
+                updateStatsForRole();
+            }
+        }
+
+        // Update stats for limited role view
+        function updateStatsForRole() {
+            document.getElementById('statActive').textContent = '8';
+            document.getElementById('statReview').textContent = '2';
+            document.getElementById('statPending').textContent = '1';
+            document.getElementById('statOnhold').textContent = '1';
+            document.getElementById('partnersBadge').textContent = '12';
+            document.getElementById('paginationInfo').textContent = 'Showing 1-7 of 12 partners';
+        }
+
+        // Filter functions
+        function applyFilter() {
+            const status = document.getElementById('statusFilter').value;
+            const type = document.getElementById('typeFilter').value;
+            const branch = document.getElementById('branchFilter').value;
+            const rm = document.getElementById('rmFilter').value;
+
+            // Show clear button if any filter is active
+            const hasFilters = status || type || branch || rm;
+            document.getElementById('clearFilters').style.display = hasFilters ? 'flex' : 'none';
+
+            // Highlight active filters
+            document.getElementById('statusFilter').classList.toggle('highlighted', !!status);
+            document.getElementById('typeFilter').classList.toggle('highlighted', !!type);
+            document.getElementById('branchFilter').classList.toggle('highlighted', !!branch);
+            document.getElementById('rmFilter').classList.toggle('highlighted', !!rm);
+
+            showToast('Filters applied');
+        }
+
+        function clearAllFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('branchFilter').value = '';
+
+            // Only clear RM filter if not sales role
+            const role = getCurrentRole();
+            if (roleConfig[role].showRMFilter) {
+                document.getElementById('rmFilter').value = '';
+            }
+
+            // Remove highlights
+            document.querySelectorAll('.filter-select').forEach(el => {
+                el.classList.remove('highlighted');
+            });
+
+            document.getElementById('clearFilters').style.display = 'none';
+            showToast('Filters cleared');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>

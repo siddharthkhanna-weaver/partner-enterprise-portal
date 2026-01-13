@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeopleHome Partner Portal - Lead Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --primary-dark: #1A5D38;
+            --primary: #228B4A;
+            --primary-light: #2FA55A;
+            --accent: #EDB41C;
+            --background: #F5F6F5;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A2E28;
+            --text-secondary: #6B7B75;
+            --text-light: #9AA8A3;
+            --border: #E8EDEB;
+            --error: #DC3545;
+            --success: #28A745;
+            --info: #17A2B8;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            background: var(--background);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo {
+            height: 36px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: var(--background);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(34, 139, 74, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-item.active svg {
+            fill: var(--primary);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-secondary);
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--error);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--card-bg);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary);
+        }
+
+        .breadcrumb svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-light);
+        }
+
+        .breadcrumb span {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--background);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Page Content */
+        .page-content {
+            padding: 32px;
+            flex: 1;
+            overflow-y: auto;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Lead Header Card */
+        .lead-header-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .lead-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .customer-name-lg {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .lead-id-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .loan-amount-badge {
+            background: rgba(34, 139, 74, 0.1);
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .loan-amount-badge .amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .loan-amount-badge .label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* Info Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Partner Card */
+        .partner-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--background);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .partner-card:hover {
+            background: var(--border);
+        }
+
+        .partner-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .partner-info {
+            flex: 1;
+        }
+
+        .partner-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .partner-code {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .partner-arrow {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .partner-arrow svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-secondary);
+        }
+
+        /* Submission Info */
+        .submission-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            margin-top: 16px;
+        }
+
+        .submission-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .submission-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .submission-value {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Contact RM Button */
+        .contact-rm-btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .contact-rm-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .contact-rm-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Partial Lead Banner */
+        .partial-lead-banner {
+            background: rgba(237, 180, 28, 0.1);
+            border: 1px solid rgba(237, 180, 28, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .partial-lead-banner svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--accent);
+        }
+
+        .partial-lead-banner .text {
+            flex: 1;
+        }
+
+        .partial-lead-banner .title {
+            font-weight: 600;
+            color: #B8860B;
+            font-size: 14px;
+        }
+
+        .partial-lead-banner .subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: var(--primary-dark);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lead-header-top {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .loan-amount-badge {
+                align-self: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="Logo.png" alt="PeopleHome" class="sidebar-logo">
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Partner Management</div>
+                <a href="Enterprise_Partners.html" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                    </svg>
+                    Partners
+                    <span class="nav-badge">12</span>
+                </a>
+                <a href="Enterprise_Leads.html" class="nav-item active" id="leadsNavItem">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                    </svg>
+                    Leads
+                </a>
+            </div>
+
+            <div class="nav-section" id="adminSection">
+                <div class="nav-section-title">Administration</div>
+                <a href="Enterprise_Users.html" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    User Management
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">AK</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">Amit Kumar</div>
+                    <div class="user-role" id="userRole">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="breadcrumb">
+                <a href="Enterprise_Leads.html">Leads</a>
+                <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                <span>LD-4521</span>
+            </div>
+            <div class="top-bar-actions">
+                <button class="btn btn-secondary" onclick="window.history.back()">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                    Back
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Lead Header Card -->
+            <div class="lead-header-card">
+                <div class="lead-header-top">
+                    <div>
+                        <h1 class="customer-name-lg">Amit Sharma</h1>
+                        <p class="lead-id-text">Lead ID: LD-4521</p>
+                    </div>
+                    <div class="loan-amount-badge">
+                        <div class="amount">50 L</div>
+                        <div class="label">Loan Amount</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Details -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Contact Details</h2>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Mobile Number</span>
+                            <span class="info-value">+91 98765 43210</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Email Address</span>
+                            <span class="info-value">amit.sharma@email.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property Details -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Property Details</h2>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Property Type</span>
+                            <span class="info-value">Flat / Apartment</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Location</span>
+                            <span class="info-value">Andheri West, Mumbai</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Partner & Submission Info -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Submission Details</h2>
+                </div>
+                <div class="card-body" style="padding: 16px 24px;">
+                    <div class="partner-card" onclick="window.location.href='Enterprise_Partner_Details.html'">
+                        <div class="partner-avatar">RK</div>
+                        <div class="partner-info">
+                            <div class="partner-name">Rajesh Kumar</div>
+                            <div class="partner-code">PH-DSA-00142</div>
+                        </div>
+                        <div class="partner-arrow">
+                            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="submission-info">
+                        <div class="submission-row">
+                            <span class="submission-label">Submitted On</span>
+                            <span class="submission-value">Jan 15, 2024 at 9:00 AM</span>
+                        </div>
+                        <div class="submission-row">
+                            <span class="submission-label">Submitted By</span>
+                            <span class="submission-value">Rajesh Kumar (DSA)</span>
+                        </div>
+                        <div class="submission-row">
+                            <span class="submission-label">Last Updated</span>
+                            <span class="submission-value">Jan 18, 2024 at 10:30 AM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Role-based configuration
+        const roleConfig = {
+            admin: {
+                showAdminSection: true,
+                showLeads: true,
+                name: 'Amit Kumar',
+                initials: 'AK',
+                roleLabel: 'Administrator'
+            },
+            rcu: {
+                showAdminSection: false,
+                showLeads: false,
+                name: 'Deepak Verma',
+                initials: 'DV',
+                roleLabel: 'RCU Verifier'
+            },
+            sales: {
+                showAdminSection: false,
+                showLeads: true,
+                name: 'Rahul Sharma',
+                initials: 'RS',
+                roleLabel: 'Sales/RM'
+            }
+        };
+
+        function getCurrentRole() {
+            return sessionStorage.getItem('userRole') || 'admin';
+        }
+
+        function initializePage() {
+            const role = getCurrentRole();
+            const config = roleConfig[role];
+
+            // Update user info in sidebar
+            document.getElementById('userAvatar').textContent = config.initials;
+            document.getElementById('userName').textContent = config.name;
+            document.getElementById('userRole').textContent = config.roleLabel;
+
+            // Show/hide admin section
+            const adminSection = document.getElementById('adminSection');
+            if (adminSection) {
+                adminSection.style.display = config.showAdminSection ? 'block' : 'none';
+            }
+
+            // Show/hide leads nav item (RCU only sees Partners)
+            const leadsNav = document.getElementById('leadsNavItem');
+            if (leadsNav && config.showLeads === false) {
+                leadsNav.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initializePage);
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

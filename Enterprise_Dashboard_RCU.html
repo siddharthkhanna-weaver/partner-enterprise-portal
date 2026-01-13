@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeopleHome Partner Portal - RCU Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --primary-dark: #1A5D38;
+            --primary: #228B4A;
+            --primary-light: #2FA55A;
+            --accent: #EDB41C;
+            --accent-light: #F5C63D;
+            --background: #F5F6F5;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A2E28;
+            --text-secondary: #6B7B75;
+            --text-light: #9AA8A3;
+            --border: #E8EDEB;
+            --error: #DC3545;
+            --success: #28A745;
+            --warning: #FFC107;
+            --info: #17A2B8;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            background: var(--background);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo {
+            height: 36px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: var(--background);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(34, 139, 74, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-item.active svg {
+            fill: var(--primary);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-secondary);
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--error);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .nav-badge.warning {
+            background: var(--accent);
+            color: var(--primary-dark);
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .user-info:hover {
+            background: var(--background);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-dark);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: rgba(237, 180, 28, 0.15);
+            color: #B8860B;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--card-bg);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--background);
+            border-radius: 10px;
+            padding: 10px 16px;
+            gap: 10px;
+            width: 280px;
+        }
+
+        .search-box svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-light);
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .search-box input:focus {
+            outline: none;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            border: none;
+        }
+
+        .icon-btn:hover {
+            background: var(--border);
+        }
+
+        .icon-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-secondary);
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            padding: 32px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card.highlight {
+            background: linear-gradient(135deg, rgba(237, 180, 28, 0.1) 0%, rgba(237, 180, 28, 0.05) 100%);
+            border: 1px solid rgba(237, 180, 28, 0.3);
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon.green {
+            background: rgba(34, 139, 74, 0.1);
+        }
+
+        .stat-icon.green svg {
+            fill: var(--primary);
+        }
+
+        .stat-icon.yellow {
+            background: rgba(237, 180, 28, 0.15);
+        }
+
+        .stat-icon.yellow svg {
+            fill: var(--accent);
+        }
+
+        .stat-icon.red {
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .stat-icon.red svg {
+            fill: var(--error);
+        }
+
+        .stat-icon.blue {
+            background: rgba(23, 162, 184, 0.1);
+        }
+
+        .stat-icon.blue svg {
+            fill: var(--info);
+        }
+
+        .stat-icon svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Card */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title .count {
+            background: var(--error);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .card-action {
+            font-size: 13px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* Verification Queue */
+        .verification-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .verification-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .verification-item:last-child {
+            border-bottom: none;
+        }
+
+        .verification-item:hover {
+            background: var(--background);
+        }
+
+        .verification-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .verification-details {
+            flex: 1;
+        }
+
+        .verification-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .verification-info {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .verification-info span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .verification-docs {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .doc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: var(--background);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .doc-badge.pending {
+            background: rgba(237, 180, 28, 0.15);
+            color: #B8860B;
+        }
+
+        .doc-badge.verified {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .doc-badge svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+        }
+
+        .verification-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn.primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .action-btn.primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .action-btn.secondary {
+            background: var(--background);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .action-btn.secondary:hover {
+            background: var(--border);
+        }
+
+        .action-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* Flagged Partners */
+        .flagged-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(220, 53, 69, 0.03);
+        }
+
+        .flagged-item:last-child {
+            border-bottom: none;
+        }
+
+        .flag-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(220, 53, 69, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flag-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--error);
+        }
+
+        .flag-details {
+            flex: 1;
+        }
+
+        .flag-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .flag-reason {
+            font-size: 12px;
+            color: var(--error);
+        }
+
+        .flag-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Document Verification Summary */
+        .doc-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            padding: 24px;
+        }
+
+        .doc-summary-item {
+            text-align: center;
+            padding: 20px;
+            background: var(--background);
+            border-radius: 12px;
+        }
+
+        .doc-summary-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .doc-summary-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .doc-summary-item.success .doc-summary-value {
+            color: var(--success);
+        }
+
+        .doc-summary-item.warning .doc-summary-value {
+            color: var(--accent);
+        }
+
+        .doc-summary-item.error .doc-summary-value {
+            color: var(--error);
+        }
+
+        /* Today's Activity */
+        .activity-timeline {
+            padding: 24px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding-bottom: 20px;
+            position: relative;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 32px;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .timeline-icon.verified {
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .timeline-icon.verified svg {
+            fill: var(--success);
+        }
+
+        .timeline-icon.flagged {
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .timeline-icon.flagged svg {
+            fill: var(--error);
+        }
+
+        .timeline-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .timeline-text strong {
+            font-weight: 600;
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: var(--primary-dark);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1400px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .doc-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="Logo.png" alt="PeopleHome" class="sidebar-logo">
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Main</div>
+                <a href="Enterprise_Dashboard_RCU.html" class="nav-item active">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="Enterprise_Partners.html" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                    </svg>
+                    Verification Queue
+                    <span class="nav-badge">12</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Monitoring</div>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/>
+                    </svg>
+                    Flagged Partners
+                    <span class="nav-badge warning">3</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                    </svg>
+                    Reports
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info" onclick="showToast('Profile settings')">
+                <div class="user-avatar">SP</div>
+                <div class="user-details">
+                    <div class="user-name">Sanjay Patel</div>
+                    <div class="user-role"><span class="role-badge">RCU</span></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <h1 class="page-title">RCU Dashboard</h1>
+            <div class="top-bar-actions">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                    <input type="text" placeholder="Search partner by name, code...">
+                </div>
+                <button class="icon-btn" onclick="window.location.href='Enterprise_Login.html'">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card highlight">
+                    <div class="stat-icon yellow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Pending Verifications</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Verified Today</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon red">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Flagged Partners</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">847</div>
+                        <div class="stat-label">Total Verified</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification Queue -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        Verification Queue
+                        <span class="count">12</span>
+                    </h2>
+                    <span class="card-action">View All</span>
+                </div>
+                <div class="verification-list">
+                    <div class="verification-item">
+                        <div class="verification-avatar">PS</div>
+                        <div class="verification-details">
+                            <div class="verification-name">Priya Sharma</div>
+                            <div class="verification-info">
+                                <span>PH-CON-00143</span>
+                                <span>Connector</span>
+                                <span>Delhi Branch</span>
+                            </div>
+                            <div class="verification-docs">
+                                <span class="doc-badge pending">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                                    Aadhaar
+                                </span>
+                                <span class="doc-badge pending">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                                    PAN
+                                </span>
+                                <span class="doc-badge verified">
+                                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                    Bank
+                                </span>
+                            </div>
+                        </div>
+                        <div class="verification-actions">
+                            <button class="action-btn secondary" onclick="showToast('Opening documents...')">
+                                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                                View
+                            </button>
+                            <button class="action-btn primary" onclick="showToast('Partner verified!')">
+                                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                Verify
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="verification-item">
+                        <div class="verification-avatar">SM</div>
+                        <div class="verification-details">
+                            <div class="verification-name">Sunita Mehta</div>
+                            <div class="verification-info">
+                                <span>PH-DSA-00141</span>
+                                <span>DSA</span>
+                                <span>Bangalore Branch</span>
+                            </div>
+                            <div class="verification-docs">
+                                <span class="doc-badge verified">
+                                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                    Aadhaar
+                                </span>
+                                <span class="doc-badge verified">
+                                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                    PAN
+                                </span>
+                                <span class="doc-badge pending">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                                    Bank
+                                </span>
+                            </div>
+                        </div>
+                        <div class="verification-actions">
+                            <button class="action-btn secondary" onclick="showToast('Opening documents...')">
+                                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                                View
+                            </button>
+                            <button class="action-btn primary" onclick="showToast('Partner verified!')">
+                                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                Verify
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="verification-item">
+                        <div class="verification-avatar">MK</div>
+                        <div class="verification-details">
+                            <div class="verification-name">Mukesh Kumar</div>
+                            <div class="verification-info">
+                                <span>PH-DSA-00144</span>
+                                <span>DSA</span>
+                                <span>Mumbai Branch</span>
+                            </div>
+                            <div class="verification-docs">
+                                <span class="doc-badge pending">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                                    Aadhaar
+                                </span>
+                                <span class="doc-badge pending">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                                    PAN
+                                </span>
+                                <span class="doc-badge pending">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                                    Bank
+                                </span>
+                            </div>
+                        </div>
+                        <div class="verification-actions">
+                            <button class="action-btn secondary" onclick="showToast('Opening documents...')">
+                                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                                View
+                            </button>
+                            <button class="action-btn primary" onclick="showToast('Partner verified!')">
+                                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                Verify
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flagged Partners -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--error);margin-right:8px;"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>
+                        Flagged Partners
+                    </h2>
+                </div>
+                <div class="verification-list">
+                    <div class="flagged-item">
+                        <div class="flag-icon">
+                            <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        </div>
+                        <div class="flag-details">
+                            <div class="flag-title">Ravi Teja - PH-DSA-00098</div>
+                            <div class="flag-reason">PAN verification failed - Name mismatch</div>
+                        </div>
+                        <div class="flag-time">2 hours ago</div>
+                    </div>
+                    <div class="flagged-item">
+                        <div class="flag-icon">
+                            <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        </div>
+                        <div class="flag-details">
+                            <div class="flag-title">Deepak Singh - PH-CON-00087</div>
+                            <div class="flag-reason">Suspicious address - Multiple partners with same address</div>
+                        </div>
+                        <div class="flag-time">Yesterday</div>
+                    </div>
+                    <div class="flagged-item">
+                        <div class="flag-icon">
+                            <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        </div>
+                        <div class="flag-details">
+                            <div class="flag-title">Kiran Rao - PH-DSA-00102</div>
+                            <div class="flag-reason">Bank account verification pending - Account holder name different</div>
+                        </div>
+                        <div class="flag-time">2 days ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Today's Activity</h2>
+                </div>
+                <div class="activity-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon verified">
+                            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <p class="timeline-text">Verified <strong>Rajesh Kumar</strong> - All documents approved</p>
+                            <span class="timeline-time">10 minutes ago</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon verified">
+                            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <p class="timeline-text">Verified <strong>Anita Deshmukh</strong> - All documents approved</p>
+                            <span class="timeline-time">45 minutes ago</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon flagged">
+                            <svg viewBox="0 0 24 24"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <p class="timeline-text">Flagged <strong>Ravi Teja</strong> - PAN verification failed</p>
+                            <span class="timeline-time">2 hours ago</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon verified">
+                            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <p class="timeline-text">Verified <strong>Pooja Nair</strong> - All documents approved</p>
+                            <span class="timeline-time">3 hours ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
