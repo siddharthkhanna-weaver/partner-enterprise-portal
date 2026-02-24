@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -190,6 +191,11 @@
         .role-badge.sales {
             background: rgba(237, 180, 28, 0.15);
             color: #B8860B;
+        }
+
+        .role-badge.bpm {
+            background: rgba(0, 123, 255, 0.1);
+            color: #007BFF;
         }
 
         /* Main Content */
@@ -731,6 +737,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <aside class="sidebar">
@@ -743,14 +750,16 @@
                 <div class="nav-section-title">Partner Management</div>
                 <a href="Enterprise_Partners.html" class="nav-item active">
                     <svg viewBox="0 0 24 24">
-                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                        <path
+                            d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
                     </svg>
                     Partners
                     <span class="nav-badge" id="partnersBadge">12</span>
                 </a>
                 <a href="Enterprise_Leads.html" class="nav-item" id="leadsNavItem">
                     <svg viewBox="0 0 24 24">
-                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        <path
+                            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
                     </svg>
                     Leads
                 </a>
@@ -760,7 +769,8 @@
                 <div class="nav-section-title">Administration</div>
                 <a href="Enterprise_Users.html" class="nav-item">
                     <svg viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        <path
+                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                     </svg>
                     User Management
                 </a>
@@ -785,13 +795,17 @@
             <div class="page-title-section">
                 <h1 class="page-title">Partners</h1>
                 <div class="filter-indicator" id="filterIndicator">
-                    <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z" />
+                    </svg>
                     <span id="filterText">Showing mapped partners only</span>
                 </div>
             </div>
             <div class="top-bar-actions">
                 <button class="btn btn-secondary" onclick="showToast('Exporting data...')">
-                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                    </svg>
                     Export
                 </button>
             </div>
@@ -801,7 +815,10 @@
         <div class="page-content">
             <!-- Role Info Banner -->
             <div class="role-info-banner" id="roleInfoBanner">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                </svg>
                 <p><strong>Limited Access:</strong> You are viewing only partners mapped to you as the tagged RM.</p>
             </div>
 
@@ -809,7 +826,8 @@
             <div class="filters-bar">
                 <div class="search-box">
                     <svg viewBox="0 0 24 24">
-                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                        <path
+                            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
                     </svg>
                     <input type="text" placeholder="Search by name, code, mobile, PAN...">
                 </div>
@@ -848,7 +866,10 @@
                 </select>
 
                 <button class="clear-filters" id="clearFilters" onclick="clearAllFilters()">
-                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    </svg>
                     Clear Filters
                 </button>
             </div>
@@ -1021,7 +1042,9 @@
                     </div>
                     <div class="pagination-controls">
                         <button class="page-btn" disabled>
-                            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                            <svg viewBox="0 0 24 24">
+                                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+                            </svg>
                         </button>
                         <button class="page-btn active">1</button>
                         <button class="page-btn">2</button>
@@ -1029,7 +1052,9 @@
                         <button class="page-btn">...</button>
                         <button class="page-btn">176</button>
                         <button class="page-btn">
-                            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                            <svg viewBox="0 0 24 24">
+                                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -1049,6 +1074,16 @@
                 badgeClass: 'admin',
                 showAllPartners: true,
                 showAdminSection: true,
+                showRMFilter: true,
+                showLeads: true
+            },
+            bpm: {
+                name: 'Amit Khanna',
+                initials: 'AK',
+                badge: 'BPM',
+                badgeClass: 'bpm',
+                showAllPartners: true,
+                showAdminSection: false,
                 showRMFilter: true,
                 showLeads: true
             },
@@ -1184,4 +1219,5 @@
         document.addEventListener('DOMContentLoaded', initializePage);
     </script>
 </body>
+
 </html>
